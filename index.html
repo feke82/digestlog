@@ -9,6 +9,7 @@
         :root {
             --primary: #2ecc71;
             --drink: #3498db;
+            --consumption: #e67e22;
             --danger: #e74c3c;
             --sleep: #9b59b6;
             --bg: #f5f6fa;
@@ -119,7 +120,7 @@
             gap: 10px;
         }
 
-        input[type="date"], input[type="time"], input[type="text"], input[type="password"], input[type="number"] {
+        input[type="date"], input[type="time"], input[type="text"], input[type="password"] {
             width: 100%;
             padding: 12px;
             border-radius: 8px;
@@ -150,10 +151,10 @@
 
         .preview-grid {
             display: none;
-            flex-direction: column;
-            gap: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .action-btn {
@@ -314,62 +315,50 @@
 
         <div id="tabRogzites" class="tab-content active">
             
-            <div class="section" style="border-top-color: var(--primary);">
-                <div class="section-title" data-i18n="sec_food">🍽️ Record Food</div>
-                <label class="camera-btn">
-                    <span data-i18n="btn_upload_pics">📸 Photo or Upload Images (Multiple)</span>
-                    <input type="file" accept="image/*" multiple id="foodPhotoInput" onchange="kezeldAKepeket(this, 'foodPreviewCont', 'food')">
-                </label>
-                <div id="foodPreviewCont" class="preview-grid"></div>
-
-                <label data-i18n="lbl_food_name">Food Name (Manual entry without photo):</label>
-                <input type="text" id="foodName" data-i18n-holder="plc_food">
+            <div class="section" style="border-top-color: var(--consumption);">
+                <div class="section-title" data-i18n="sec_consumption">🍽️🥤 Record Consumption</div>
                 
-                <div class="datetime-container">
-                    <div><label data-i18n="lbl_date">Date:</label><input type="date" id="foodDate"></div>
-                    <div><label data-i18n="lbl_time">Time:</label><input type="time" id="foodTime"></div>
+                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <label class="camera-btn" style="flex: 1; margin-bottom: 0; padding: 12px 5px; font-size: 13px;">
+                        <span data-i18n="btn_photo">📸 Photo</span>
+                        <input type="file" accept="image/*" capture="environment" id="consCameraInput" onchange="kezeldAFogyasztast(this, 'camera')">
+                    </label>
+                    <label class="camera-btn" style="flex: 1; margin-bottom: 0; padding: 12px 5px; font-size: 13px;">
+                        <span data-i18n="btn_upload">📂 Upload</span>
+                        <input type="file" accept="image/*" multiple id="consUploadInput" onchange="kezeldAFogyasztast(this, 'upload')">
+                    </label>
+                    <button class="tab-btn" id="btnKeziAdd" style="flex: 1; background: #f1f2f6; border: 2px solid #ccc; color: #57606f; border-radius: 8px; padding: 10px 5px; font-size: 13px;" onclick="mutasdKezit()" data-i18n="btn_manual">✍️ Manual</button>
                 </div>
 
-                <label data-i18n="lbl_mood">Mood (Optional):</label>
-                <div class="grid-options">
-                    <label class="option-item"><input type="checkbox" name="foodMood" value="ok"><span data-i18n="m_ok">All OK</span></label>
-                    <label class="option-item"><input type="checkbox" name="foodMood" value="low"><span data-i18n="m_low">Low energy</span></label>
-                    <label class="option-item"><input type="checkbox" name="foodMood" value="tired"><span data-i18n="m_tired">Tired</span></label>
-                    <label class="option-item"><input type="checkbox" name="foodMood" value="stressed"><span data-i18n="m_stressed">Stressed</span></label>
-                    <label class="option-item"><input type="checkbox" name="foodMood" value="cheerful"><span data-i18n="m_cheerful">Cheerful</span></label>
-                    <label class="option-item"><input type="checkbox" name="foodMood" value="sad"><span data-i18n="m_sad">Sad</span></label>
+                <div id="consumptionPreviewCont" class="preview-grid"></div>
+
+                <div id="consumptionFormFields" style="display: none; margin-top: 15px; border-top: 1px dashed #eee; padding-top: 10px;">
+                    <label data-i18n="lbl_cons_type">Type:</label>
+                    <div style="display: flex; gap: 10px;">
+                        <label class="option-item" style="flex: 1; justify-content: center;"><input type="radio" name="consType" value="food" id="radioFood"><span data-i18n="type_food">Food</span></label>
+                        <label class="option-item" style="flex: 1; justify-content: center;"><input type="radio" name="consType" value="drink" id="radioDrink"><span data-i18n="type_drink">Drink</span></label>
+                    </div>
+
+                    <label data-i18n="lbl_cons_name">Name / Description:</label>
+                    <input type="text" id="consName" data-i18n-holder="plc_cons">
+                    
+                    <div class="datetime-container">
+                        <div><label data-i18n="lbl_date">Date:</label><input type="date" id="consDate"></div>
+                        <div><label data-i18n="lbl_time">Time:</label><input type="time" id="consTime"></div>
+                    </div>
+
+                    <label data-i18n="lbl_mood">Mood (Optional):</label>
+                    <div class="grid-options">
+                        <label class="option-item"><input type="checkbox" name="consMood" value="ok"><span data-i18n="m_ok">All OK</span></label>
+                        <label class="option-item"><input type="checkbox" name="consMood" value="low"><span data-i18n="m_low">Low energy</span></label>
+                        <label class="option-item"><input type="checkbox" name="consMood" value="tired"><span data-i18n="m_tired">Tired</span></label>
+                        <label class="option-item"><input type="checkbox" name="consMood" value="stressed"><span data-i18n="m_stressed">Stressed</span></label>
+                        <label class="option-item"><input type="checkbox" name="consMood" value="cheerful"><span data-i18n="m_cheerful">Cheerful</span></label>
+                        <label class="option-item"><input type="checkbox" name="consMood" value="sad"><span data-i18n="m_sad">Sad</span></label>
+                    </div>
+
+                    <button class="action-btn" style="background-color: var(--consumption);" onclick="mentesFogyasztas()" data-i18n="btn_save_cons">Save Entry</button>
                 </div>
-
-                <button class="action-btn" style="background-color: var(--primary);" onclick="mentesEtel()" data-i18n="btn_save_food">Save Food</button>
-            </div>
-
-            <div class="section" style="border-top-color: var(--drink);">
-                <div class="section-title" data-i18n="sec_drink">🥤 Record Drink</div>
-                <label class="camera-btn">
-                    <span data-i18n="btn_upload_pics">📸 Photo or Upload Images (Multiple)</span>
-                    <input type="file" accept="image/*" multiple id="drinkPhotoInput" onchange="kezeldAKepeket(this, 'drinkPreviewCont', 'drink')">
-                </label>
-                <div id="drinkPreviewCont" class="preview-grid"></div>
-
-                <label data-i18n="lbl_drink_name">Drink Name (Manual entry without photo):</label>
-                <input type="text" id="drinkName" data-i18n-holder="plc_drink">
-                
-                <div class="datetime-container">
-                    <div><label data-i18n="lbl_date">Date:</label><input type="date" id="drinkDate"></div>
-                    <div><label data-i18n="lbl_time">Time:</label><input type="time" id="drinkTime"></div>
-                </div>
-
-                <label data-i18n="lbl_mood">Mood (Optional):</label>
-                <div class="grid-options">
-                    <label class="option-item"><input type="checkbox" name="drinkMood" value="ok"><span data-i18n="m_ok">All OK</span></label>
-                    <label class="option-item"><input type="checkbox" name="drinkMood" value="low"><span data-i18n="m_low">Low energy</span></label>
-                    <label class="option-item"><input type="checkbox" name="drinkMood" value="tired"><span data-i18n="m_tired">Tired</span></label>
-                    <label class="option-item"><input type="checkbox" name="drinkMood" value="stressed"><span data-i18n="m_stressed">Stressed</span></label>
-                    <label class="option-item"><input type="checkbox" name="drinkMood" value="cheerful"><span data-i18n="m_cheerful">Cheerful</span></label>
-                    <label class="option-item"><input type="checkbox" name="drinkMood" value="sad"><span data-i18n="m_sad">Sad</span></label>
-                </div>
-
-                <button class="action-btn" style="background-color: var(--drink);" onclick="mentesItal()" data-i18n="btn_save_drink">Save Drink</button>
             </div>
 
             <div class="section" style="border-top-color: var(--danger);">
@@ -438,14 +427,13 @@
     </div>
 
     <script>
-        // GLOBÁLIS NYELVI SZÓTÁR (i18n)
+        // GLOBÁLIS NYELVI SZÓTÁR (i18n frissítve)
         const szotar = {
             en: {
                 app_title: "🌱 DigestLog AI", tab_new_entry: "📝 New Entry", tab_log_reports: "📊 Log & Reports",
-                sec_food: "🍽️ Record Food", btn_upload_pics: "📸 Photo or Upload Images (Multiple)",
-                lbl_food_name: "Food Name:", plc_food: "E.g. Oatmeal with strawberries...", lbl_date: "Date:", lbl_time: "Time:",
-                lbl_mood: "Mood (Optional):", btn_save_food: "Save Food", sec_drink: "🥤 Record Drink",
-                lbl_drink_name: "Drink Name:", plc_drink: "E.g. Green tea...", btn_save_drink: "Save Drink",
+                sec_consumption: "🍽️🥤 Record Consumption", btn_photo: "📸 Photo", btn_upload: "📂 Upload", btn_manual: "✍️ Manual",
+                lbl_cons_type: "Type:", lbl_cons_name: "Name / Description:", plc_cons: "E.g. Oatmeal, Coffee...",
+                lbl_date: "Date:", lbl_time: "Time:", lbl_mood: "Mood (Optional):", btn_save_cons: "Save Consumption",
                 sec_symptom: "⚠️ Record Symptom", lbl_select_symptoms: "Select Symptoms:", btn_save_symptom: "Save Symptom",
                 sec_sleep: "⏰ Rhythm & Sleep", lbl_bedtime: "🛏️ BEDTIME:", lbl_wake_time: "🌅 WAKE UP TIME:",
                 lbl_wake_quality: "Wake up feeling (Optional):", btn_save_sleep: "Save Sleep Data",
@@ -456,14 +444,13 @@
                 wq_refreshed: "Refreshed", wq_tired: "Tired", wq_groggy: "Groggy",
                 msg_saved: "Saved successfully!", msg_select_symptom: "Please select at least one symptom!", msg_confirm_delete: "Are you sure you want to delete this item?", msg_confirm_clear: "Are you sure you want to clear ALL data?", msg_no_report_data: "No data found for this period.",
                 type_food: "Food", type_drink: "Drink", type_symptom: "Symptom", type_sleep: "Sleep",
-                log_bedtime: "Went to bed", log_wake: "Woke up", log_duration: "Sleep duration:", log_mood_prefix: "Mood:", log_symptom_prefix: "Symptoms:", unnamed_food: "Unnamed Food", unnamed_drink: "Unnamed Drink", hour_str: "hours", min_str: "minutes"
+                log_bedtime: "Went to bed", log_wake: "Woke up", log_duration: "Sleep duration:", log_mood_prefix: "Mood:", log_symptom_prefix: "Symptoms:", unnamed_food: "Unnamed Food", unnamed_drink: "Unnamed Drink", unnamed_cons: "Unnamed Item", hour_str: "hours", min_str: "minutes"
             },
             hu: {
                 app_title: "🌱 DigestLog AI", tab_new_entry: "📝 Új rögzítés", tab_log_reports: "📊 Napló & Riportok",
-                sec_food: "🍽️ Étel rögzítése", btn_upload_pics: "📸 Fotózás vagy Képek feltöltése (több is lehet)",
-                lbl_food_name: "Étel megnevezése:", plc_food: "Pl: Zabkása eperrel...", lbl_date: "Dátum:", lbl_time: "Időpont:",
-                lbl_mood: "Kedélyállapot (opcionális):", btn_save_food: "Étel mentése", sec_drink: "🥤 Ital rögzítése",
-                lbl_drink_name: "Ital megnevezése:", plc_drink: "Pl: Zöld tea...", btn_save_drink: "Ital mentése",
+                sec_consumption: "🍽️🥤 Fogyasztás rögzítése", btn_photo: "📸 Fotó", btn_upload: "📂 Feltöltés", btn_manual: "✍️ Kézi",
+                lbl_cons_type: "Típus:", lbl_cons_name: "Megnevezés:", plc_cons: "Pl: Zabkása, Espresso, Rostos üdítő...",
+                lbl_date: "Dátum:", lbl_time: "Időpont:", lbl_mood: "Kedélyállapot (opcionális):", btn_save_cons: "Fogyasztás mentése",
                 sec_symptom: "⚠️ Tünet rögzítése", lbl_select_symptoms: "Válaszd ki a tüneteket:", btn_save_symptom: "Tünet mentése",
                 sec_sleep: "⏰ Ritmus & Alvás", lbl_bedtime: "🛏️ LEFEKVÉS:", lbl_wake_time: "🌅 ÉBREDÉS:",
                 lbl_wake_quality: "Ébredési állapot (opcionális):", btn_save_sleep: "Alvásadatok mentése",
@@ -474,14 +461,13 @@
                 wq_refreshed: "Kipihenten", wq_tired: "Fáradtan", wq_groggy: "Kómásan",
                 msg_saved: "Sikeresen elmentve!", msg_select_symptom: "Válassz ki legalább egy tünetet!", msg_confirm_delete: "Biztosan törlöd ezt a tételt?", msg_confirm_clear: "Biztosan törlöd az ÖSSZES adatot?", msg_no_report_data: "Nincs adat ebben az időszakban.",
                 type_food: "Étel", type_drink: "Ital", type_symptom: "Tünet", type_sleep: "Alvás",
-                log_bedtime: "Lefekvés aludni", log_wake: "Ébredés", log_duration: "Alvásidőtartam:", log_mood_prefix: "Kedélyállapot:", log_symptom_prefix: "Tünetek:", unnamed_food: "Névtelen étel", unnamed_drink: "Névtelen ital", hour_str: "óra", min_str: "perc"
+                log_bedtime: "Lefekvés aludni", log_wake: "Ébredés", log_duration: "Alvásidőtartam:", log_mood_prefix: "Kedélyállapot:", log_symptom_prefix: "Tünetek:", unnamed_food: "Névtelen étel", unnamed_drink: "Névtelen ital", unnamed_cons: "Névtelen tétel", hour_str: "óra", min_str: "perc"
             },
             de: {
                 app_title: "🌱 DigestLog AI", tab_new_entry: "📝 Neuer Eintrag", tab_log_reports: "📊 Tagebuch & Berichte",
-                sec_food: "🍽️ Essen aufzeichnen", btn_upload_pics: "📸 Foto machen oder Bilder hochladen (Mehrere)",
-                lbl_food_name: "Name des Essens:", plc_food: "Z.B. Haferflocken mit Erdbeeren...", lbl_date: "Datum:", lbl_time: "Uhrzeit:",
-                lbl_mood: "Stimmung (Optional):", btn_save_food: "Essen speichern", sec_drink: "🥤 Getränk aufzeichnen",
-                lbl_drink_name: "Name des Getränks:", plc_drink: "Z.B. Grüner Tee...", btn_save_drink: "Getränk speichern",
+                sec_consumption: "🍽️🥤 Konsum aufzeichnen", btn_photo: "📸 Foto", btn_upload: "📂 Hochladen", btn_manual: "✍️ Manuell",
+                lbl_cons_type: "Typ:", lbl_cons_name: "Name / Beschreibung:", plc_cons: "Z.B. Haferflocken, Kaffee...",
+                lbl_date: "Datum:", lbl_time: "Uhrzeit:", lbl_mood: "Stimmung (Optional):", btn_save_cons: "Konsum speichern",
                 sec_symptom: "⚠️ Symptom aufzeichnen", lbl_select_symptoms: "Symptome auswählen:", btn_save_symptom: "Symptom speichern",
                 sec_sleep: "⏰ Rhythmus & Schlaf", lbl_bedtime: "🛏️ SCHLAFEN GEHEN:", lbl_wake_time: "🌅 AUFWACHEN:",
                 lbl_wake_quality: "Aufwach-Gefühl (Optional):", btn_save_sleep: "Schlafdaten speichern",
@@ -492,14 +478,13 @@
                 wq_refreshed: "Ausgeruht", wq_tired: "Müde", wq_groggy: "Benommen",
                 msg_saved: "Erfolgreich gespeichert!", msg_select_symptom: "Bitte wählen Sie mindestens ein Symptom aus!", msg_confirm_delete: "Möchten Sie diesen Eintrag wirklich löschen?", msg_confirm_clear: "Möchten Sie wirklich ALLE Daten löschen?", msg_no_report_data: "Keine Daten für diesen Zeitraum gefunden.",
                 type_food: "Essen", type_drink: "Getränk", type_symptom: "Symptom", type_sleep: "Schlaf",
-                log_bedtime: "Schlafen gegangen", log_wake: "Aufgewacht", log_duration: "Schlafdauer:", log_mood_prefix: "Stimmung:", log_symptom_prefix: "Symptome:", unnamed_food: "Unbenanntes Essen", unnamed_drink: "Unbenanntes Getränk", hour_str: "Std.", min_str: "Min."
+                log_bedtime: "Schlafen gegangen", log_wake: "Aufgewacht", log_duration: "Schlafdauer:", log_mood_prefix: "Stimmung:", log_symptom_prefix: "Symptome:", unnamed_food: "Unbenanntes Essen", unnamed_drink: "Unbenanntes Getränk", unnamed_cons: "Unbenannt", hour_str: "Std.", min_str: "Min."
             },
             es: {
                 app_title: "🌱 DigestLog AI", tab_new_entry: "📝 Nuevo Registro", tab_log_reports: "📊 Diario y Reportes",
-                sec_food: "🍽️ Registrar Comida", btn_upload_pics: "📸 Hacer Foto o Subir Imágenes (Múltiples)",
-                lbl_food_name: "Nombre de la comida:", plc_food: "Ej: Avena con fresas...", lbl_date: "Fecha:", lbl_time: "Hora:",
-                lbl_mood: "Estado de ánimo (Opcional):", btn_save_food: "Guardar Comida", sec_drink: "🥤 Registrar Bebida",
-                lbl_drink_name: "Nombre de la bebida:", plc_drink: "Ej: Té verde...", btn_save_drink: "Guardar Bebida",
+                sec_consumption: "🍽️🥤 Registrar Consumo", btn_photo: "📸 Foto", btn_upload: "📂 Subir", btn_manual: "✍️ Manual",
+                lbl_cons_type: "Tipo:", lbl_cons_name: "Nombre / Descripción:", plc_cons: "Ej: Avena, Café...",
+                lbl_date: "Fecha:", lbl_time: "Hora:", lbl_mood: "Estado de ánimo (Opcional):", btn_save_cons: "Guardar Consumo",
                 sec_symptom: "⚠️ Registrar Síntoma", lbl_select_symptoms: "Seleccionar Síntomas:", btn_save_symptom: "Guardar Síntoma",
                 sec_sleep: "⏰ Ritmo y Sueño", lbl_bedtime: "🛏️ HORA DE ACOSTARSE:", lbl_wake_time: "🌅 HORA DE LEVANTARSE:",
                 lbl_wake_quality: "Sensación al despertar (Opcional):", btn_save_sleep: "Guardar Datos de Sueño",
@@ -510,32 +495,29 @@
                 wq_refreshed: "Descansado", wq_tired: "Cansado", wq_groggy: "Aturdido",
                 msg_saved: "¡Guardado con éxito!", msg_select_symptom: "¡Por favor, seleccione al menos un síntoma!", msg_confirm_delete: "¿Está seguro de que desea eliminar este elemento?", msg_confirm_clear: "¿Está seguro de que desea borrar TODOS los datos?", msg_no_report_data: "No se encontraron datos para este período.",
                 type_food: "Comida", type_drink: "Bebida", type_symptom: "Síntoma", type_sleep: "Sueño",
-                log_bedtime: "Se acostó a dormir", log_wake: "Se despertó", log_duration: "Duración del sueño:", log_mood_prefix: "Estado de ánimo:", log_symptom_prefix: "Síntomas:", unnamed_food: "Comida sin nombre", unnamed_drink: "Bebida sin nombre", hour_str: "horas", min_str: "minutos"
+                log_bedtime: "Se acostó a dormir", log_wake: "Se despertó", log_duration: "Duración del sueño:", log_mood_prefix: "Estado de ánimo:", log_symptom_prefix: "Síntomas:", unnamed_food: "Comida sin nombre", unnamed_drink: "Bebida sin nombre", unnamed_cons: "Sin nombre", hour_str: "horas", min_str: "minutos"
             },
             fr: {
                 app_title: "🌱 DigestLog AI", tab_new_entry: "📝 Saisie", tab_log_reports: "📊 Journal & Rapports",
-                sec_food: "🍽️ Repas", btn_upload_pics: "📸 Prendre une photo ou charger des images (Plusieurs)",
-                lbl_food_name: "Nom du repas:", plc_food: "Ex: Flocons d'avoine aux fraises...", lbl_date: "Date:", lbl_time: "Heure:",
-                lbl_mood: "Humeur (Optionnel):", btn_save_food: "Enregistrer le repas", sec_drink: "🥤 Boisson",
-                lbl_drink_name: "Nom de la boisson:", plc_drink: "Ex: Thé vert...", btn_save_drink: "Enregistrer la boisson",
+                sec_consumption: "🍽️🥤 Consommation", btn_photo: "📸 Photo", btn_upload: "📂 Charger", btn_manual: "✍️ Manuel",
+                lbl_cons_type: "Type:", lbl_cons_name: "Nom / Description:", plc_cons: "Ex: Flocons d'avoine, Café...",
+                lbl_date: "Date:", lbl_time: "Heure:", lbl_mood: "Humeur (Optionnel):", btn_save_cons: "Enregistrer",
                 sec_symptom: "⚠️ Symptôme", lbl_select_symptoms: "Sélectionner les symptômes:", btn_save_symptom: "Enregistrer le symptôme",
                 sec_sleep: "⏰ Rythme & Sommeil", lbl_bedtime: "🛏️ COUCHER:", lbl_wake_time: "🌅 REVEIL:",
                 lbl_wake_quality: "Sensation au réveil (Optionnel):", btn_save_sleep: "Enregistrer le sommeil",
                 sec_reports: "📊 Rapports Médicaux Téléchargeables", r_daily: "📅 Rapport Quotidien", r_weekly: "🗓️ Rapport Hebdomadaire", r_monthly: "📅 Rapport Mensuel",
                 sec_history: "📜 Historique du Journal", btn_clear_all: "Tout effacer", no_data: "Aucune donnée enregistrée.",
                 m_ok: "Tout va bien", m_low: "Abattu", m_tired: "Fatigué", m_stressed: "Stressé", m_cheerful: "Joyeux", m_sad: "Triste",
-                s_bloating: "Ballonnement", s_stomachache: "Mal de l'estomac", s_cramps: "Crampes abdominales", s_diarrhea: "Diarrhée", s_nausea: "Nausée", s_constipation: "Constipation",
+                s_bloating: "Ballonnement", s_stomachache: "Mal de l'estomac", s_cramps: "Crampes abdominales", s_diarrhea: "Diarhée", s_nausea: "Nausée", s_constipation: "Constipation",
                 wq_refreshed: "Reposé", wq_tired: "Fatigué", wq_groggy: "Tête dans le gaz",
-                msg_saved: "Enregistré avec succès!", msg_select_symptom: "Veuillez sélectionner au moins un symptom!", msg_confirm_delete: "Êtes-vous sûr de vouloir supprimer cet élément?", msg_confirm_clear: "Êtes-vous sûr de vouloir effacer TOUTES les données?", msg_no_report_data: "Aucune donnée trouvée pour cette période.",
+                msg_saved: "Enregistré avec succès!", msg_select_symptom: "Veuillez sélectionner au moins un symptôme!", msg_confirm_delete: "Êtes-vous sûr de vouloir supprimer cet élément?", msg_confirm_clear: "Êtes-vous sûr de vouloir effacer TOUTES les données?", msg_no_report_data: "Aucune donnée trouvée pour cette période.",
                 type_food: "Repas", type_drink: "Boisson", type_symptom: "Symptôme", type_sleep: "Sommeil",
-                log_bedtime: "Couché", log_wake: "Réveillé", log_duration: "Durée du sommeil:", log_mood_prefix: "Humeur:", log_symptom_prefix: "Symptômes:", unnamed_food: "Repas sans nom", unnamed_drink: "Boisson sans nom", hour_str: "heures", min_str: "minutes"
+                log_bedtime: "Couché", log_wake: "Réveillé", log_duration: "Durée du sommeil:", log_mood_prefix: "Humeur:", log_symptom_prefix: "Symptômes:", unnamed_food: "Repas sans nom", unnamed_drink: "Boisson sans nom", unnamed_cons: "Sans nom", hour_str: "heures", min_str: "minutes"
             }
         };
 
         let aktualisNyelv = "en";
-        let ideiglenesEtelKepek = []; // Objektumokat tárol: { id, src, name, date, time }
-        let ideiglenesItalKepek = []; // Objektumokat tárol: { id, src, name, date, time }
-        let szerkesztesAlatt = null;  // A éppen szerkesztett naplóbejegyzés ID-ja
+        let ideiglenesFogyasztasKepek = [];
 
         window.onload = function() {
             detektaljNyelvet();
@@ -586,147 +568,143 @@
             const evHoNap = most.toISOString().split('T')[0];
             const oraPerc = String(most.getHours()).padStart(2, '0') + ':' + String(most.getMinutes()).padStart(2, '0');
             
-            document.getElementById('foodDate').value = evHoNap;
-            document.getElementById('drinkDate').value = evHoNap;
+            if(document.getElementById('consDate')) document.getElementById('consDate').value = evHoNap;
+            if(document.getElementById('consTime')) document.getElementById('consTime').value = oraPerc;
+
             document.getElementById('symptomDate').value = evHoNap;
             document.getElementById('sleepStartDate').value = evHoNap;
             document.getElementById('sleepEndDate').value = evHoNap;
 
-            document.getElementById('foodTime').value = oraPerc;
-            document.getElementById('drinkTime').value = oraPerc;
             document.getElementById('symptomTime').value = oraPerc;
         }
 
-        function kezeldAKepeket(input, contID, tipus) {
+        // Kézi rögzítés inicializálása
+        function mutasdKezit() {
+            ideiglenesFogyasztasKepek = [];
+            frissitsKepElonezetet();
+            document.getElementById('consName').value = '';
+            document.getElementById('radioFood').checked = false;
+            document.getElementById('radioDrink').checked = false;
+            
+            const most = new Date();
+            document.getElementById('consDate').value = most.toISOString().split('T')[0];
+            document.getElementById('consTime').value = String(most.getHours()).padStart(2, '0') + ':' + String(most.getMinutes()).padStart(2, '0');
+            
+            document.getElementById('consumptionFormFields').style.display = 'block';
+        }
+
+        // Egyesített képkezelő függvény (Kamera és Galéria feltöltés)
+        function kezeldAFogyasztast(input, mod) {
             const files = input.files;
             if(!files.length) return;
 
-            const most = new Date();
-            const alapEvHoNap = most.toISOString().split('T')[0];
-            const alapOraPerc = String(most.getHours()).padStart(2, '0') + ':' + String(most.getMinutes()).padStart(2, '0');
+            document.getElementById('consumptionFormFields').style.display = 'block';
+
+            // Idő és dátum automatikus kezelése
+            if (mod === 'camera') {
+                const most = new Date();
+                document.getElementById('consDate').value = most.toISOString().split('T')[0];
+                document.getElementById('consTime').value = String(most.getHours()).padStart(2, '0') + ':' + String(most.getMinutes()).padStart(2, '0');
+            } else {
+                // Alapértelmezettként most, de az EXIF felülírhatja
+                const most = new Date();
+                document.getElementById('consDate').value = most.toISOString().split('T')[0];
+                document.getElementById('consTime').value = String(most.getHours()).padStart(2, '0') + ':' + String(most.getMinutes()).padStart(2, '0');
+
+                EXIF.getData(files[0], function() {
+                    let exifDate = EXIF.getTag(this, "DateTimeOriginal");
+                    if(exifDate) {
+                        let parts = exifDate.split(" ");
+                        document.getElementById('consDate').value = parts[0].replace(/:/g, "-");
+                        document.getElementById('consTime').value = parts[1].substring(0, 5);
+                    }
+                });
+            }
 
             for(let i=0; i<files.length; i++) {
                 const fajl = files[i];
+                const olvaso = new FileReader();
+                olvaso.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let max_size = 600;
+                        let width = img.width;
+                        let height = img.height;
 
-                // EXIF adatok beolvasása cikluson belül minden képhez külön-külön
-                EXIF.getData(fajl, function() {
-                    let exifDate = EXIF.getTag(this, "DateTimeOriginal");
-                    let veglegesDatum = alapEvHoNap;
-                    let veglegesIdo = alapOraPerc;
+                        if (width > height) {
+                            if (width > max_size) { height *= max_size / width; width = max_size; }
+                        } else {
+                            if (height > max_size) { width *= max_size / height; height = max_size; }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
 
-                    if(exifDate) {
-                        let parts = exifDate.split(" ");
-                        veglegesDatum = parts[0].replace(/:/g, "-");
-                        veglegesIdo = parts[1].substring(0, 5);
-                    }
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        const tomoritettDataUrl = canvas.toDataURL('image/jpeg', 0.7);
 
-                    const olvaso = new FileReader();
-                    olvaso.onload = function(e) {
-                        const img = new Image();
-                        img.onload = function() {
-                            const canvas = document.createElement('canvas');
-                            let max_size = 600;
-                            let width = img.width;
-                            let height = img.height;
+                        ideiglenesFogyasztasKepek.push(tomoritettDataUrl);
 
-                            if (width > height) {
-                                if (width > max_size) { height *= max_size / width; width = max_size; }
-                            } else {
-                                if (height > max_size) { width *= max_size / height; height = max_size; }
-                            }
-                            canvas.width = width;
-                            canvas.height = height;
+                        // Az első kép alapján futtatjuk a Gemini intelligens elemzést (Típus + Név)
+                        if(i === 0) {
+                            hvdAGeminiFogyasztasErtekeles(tomoritettDataUrl);
+                        }
 
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-                            const tomoritettDataUrl = canvas.toDataURL('image/jpeg', 0.7);
-
-                            const ujKepObjektum = {
-                                id: 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
-                                src: tomoritettDataUrl,
-                                name: '',
-                                date: veglegesDatum,
-                                time: veglegesIdo
-                            };
-
-                            if(tipus === 'food') {
-                                ideiglenesEtelKepek.push(ujKepObjektum);
-                                hvdAGeminiKepfelismerest(ujKepObjektum.id, tomoritettDataUrl, 'food');
-                            }
-                            if(tipus === 'drink') {
-                                ideiglenesItalKepek.push(ujKepObjektum);
-                                hvdAGeminiKepfelismerest(ujKepObjektum.id, tomoritettDataUrl, 'drink');
-                            }
-
-                            frissitsKepElonezetet(contID, tipus);
-                        };
-                        img.src = e.target.result;
+                        frissitsKepElonezetet();
                     };
-                    olvaso.readAsDataURL(fajl);
-                });
+                    img.src = e.target.result;
+                };
+                olvaso.readAsDataURL(fajl);
             }
             input.value = "";
         }
 
-        function frissitsKepElonezetet(contID, tipus) {
-            const cont = document.getElementById(contID);
-            const kepek = (tipus === 'food') ? ideiglenesEtelKepek : ideiglenesItalKepek;
-            
-            if(kepek.length === 0) { cont.innerHTML = ""; cont.style.display = "none"; return; }
+        function frissitsKepElonezetet() {
+            const cont = document.getElementById('consumptionPreviewCont');
+            if(ideiglenesFogyasztasKepek.length === 0) { cont.innerHTML = ""; cont.style.display = "none"; return; }
             
             cont.style.display = "flex";
-            cont.style.flexDirection = "column";
-            cont.style.gap = "10px";
-
             let html = "";
-            kepek.forEach((kp) => {
+            ideiglenesFogyasztasKepek.forEach((kp, idx) => {
                 html += `
-                    <div style="position:relative; display:flex; gap:10px; background:#f8f9fa; border:1px solid #ddd; padding:10px; border-radius:8px; align-items:center;">
-                        <img src="${kp.src}" style="width:65px; height:65px; object-fit:cover; border-radius:6px; border:1px solid #eee;">
-                        <div style="flex:1; display:flex; flex-direction:column; gap:5px;">
-                            <input type="text" value="${kp.name}" placeholder="AI analyzing / Type name..." oninput="frissitsIdeiglenesMezot('${tipus}', '${kp.id}', 'name', this.value)" style="width:100%; padding:6px; border-radius:4px; border:1px solid #ccc; font-size:13px;">
-                            <div style="display:flex; gap:5px;">
-                                <input type="date" value="${kp.date}" onchange="frissitsIdeiglenesMezot('${tipus}', '${kp.id}', 'date', this.value)" style="padding:4px; border-radius:4px; border:1px solid #ccc; font-size:11px; flex:2;">
-                                <input type="time" value="${kp.time}" onchange="frissitsIdeiglenesMezot('${tipus}', '${kp.id}', 'time', this.value)" style="padding:4px; border-radius:4px; border:1px solid #ccc; font-size:11px; flex:1;">
-                            </div>
-                        </div>
-                        <button onclick="egyediKepTorles('${tipus}', '${kp.id}', '${contID}')" style="background:rgba(231, 76, 60, 0.9); color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center;">X</button>
+                    <div style="position:relative; width:75px; height:75px;">
+                        <img src="${kp}" style="width:100%; height:100%; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
+                        <button onclick="egyediKepTorles(${idx})" style="position:absolute; top:-5px; right:-5px; background:rgba(231, 76, 60, 0.9); color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center;">X</button>
                     </div>
                 `;
             });
             cont.innerHTML = html;
         }
 
-        function frissitsIdeiglenesMezot(tipus, id, mezo, ertek) {
-            const kepek = (tipus === 'food') ? ideiglenesEtelKepek : ideiglenesItalKepek;
-            const talalat = kepek.find(k => k.id === id);
-            if(talalat) {
-                talalat[mezo] = ertek;
-            }
+        function egyediKepTorles(idx) {
+            ideiglenesFogyasztasKepek.splice(idx, 1);
+            frissitsKepElonezetet();
         }
 
-        function egyediKepTorles(tipus, id, contID) {
-            if(tipus === 'food') ideiglenesEtelKepek = ideiglenesEtelKepek.filter(k => k.id !== id);
-            if(tipus === 'drink') ideiglenesItalKepek = ideiglenesItalKepek.filter(k => k.id !== id);
-            frissitsKepElonezetet(contID, tipus);
-        }
-
-        async function hvdAGeminiKepfelismerest(id, base64Image, tipus) {
+        // Gemini 3.5 Flash: Egyszerre határozza meg a típust (food/drink) és a megnevezést
+        async function hvdAGeminiFogyasztasErtekeles(base64Image) {
             const apiKey = document.getElementById('geminiApiKey').value.trim();
             const loadingIndicator = document.getElementById('aiLoadingStatus');
-            const contID = (tipus === 'food') ? 'foodPreviewCont' : 'drinkPreviewCont';
+            const inputMezo = document.getElementById('consName');
 
             if (!apiKey) {
-                return; // Nem szakítjuk meg a folyamatot, a felhasználó kézzel is beírhatja
+                alert("Please enter your free Google Gemini API Key first!");
+                return;
             }
 
             loadingIndicator.style.display = "block";
+            inputMezo.placeholder = "AI is analyzing with Gemini...";
 
             const tisztaBase64 = base64Image.split(',')[1];
+
             const promptSzoveg = `You are a medical nutrition assistant for a digestive symptom tracker app. 
-            Analyze this food/drink image. Provide a short, concise title/description of the food/drink items visible.
-            CRITICAL: You MUST write the response in this language: "${aktualisNyelv.toUpperCase()}". 
-            Do not include emojis, do not include chatty text, just give a plain sentence describing what it is (e.g., 'Zabkása eperrel' if language is HU). Max 10 words.`;
+            Analyze this image. Determine if it is predominantly a "food" or a "drink". Then provide a short description/name of it.
+            You MUST format your response exactly like this template:
+            TYPE: [food or drink]
+            NAME: [short plain description of the item]
+            CRITICAL: You MUST write the description text in this language: "${aktualisNyelv.toUpperCase()}". 
+            Do not include emojis, do not include chatty text, just give the plain formatted response lines. Max 10 words for name.`;
 
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
 
@@ -746,20 +724,43 @@
 
                 const data = await response.json();
                 
-                if (!data.error && data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
+                if (data.error) {
+                    alert("Gemini AI Error: " + data.error.message);
+                } else if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
                     const aiValasz = data.candidates[0].content.parts[0].text.trim();
                     
-                    const kepek = (tipus === 'food') ? ideiglenesEtelKepek : ideiglenesItalKepek;
-                    const talalat = kepek.find(k => k.id === id);
-                    if(talalat) {
-                        talalat.name = aiValasz;
-                        frissitsKepElonezetet(contID, tipus);
+                    let lines = aiValasz.split('\n');
+                    let detektaltTipus = 'food';
+                    let detektaltNev = '';
+
+                    lines.forEach(line => {
+                        if (line.toUpperCase().includes('TYPE:')) {
+                            if (line.toUpperCase().includes('DRINK')) detektaltTipus = 'drink';
+                        }
+                        if (line.toUpperCase().includes('NAME:')) {
+                            detektaltNev = line.replace(/NAME:\s*/i, '').trim();
+                        }
+                    });
+
+                    if(!detektaltNev) detektaltNev = aiValasz; // Fallback hiba esetére
+
+                    // Háttérben automatikusan bejelöljük a megfelelő Radio gombot
+                    if(detektaltTipus === 'food') {
+                        document.getElementById('radioFood').checked = true;
+                    } else {
+                        document.getElementById('radioDrink').checked = true;
                     }
+
+                    inputMezo.value = detektaltNev;
+                } else {
+                    alert("The AI couldn't read the image or gave an empty response.");
                 }
             } catch (error) {
                 console.error("Gemini API Error:", error);
+                alert("Network error while calling Gemini AI.");
             } finally {
                 loadingIndicator.style.display = "none";
+                forditsFelulete();
             }
         }
 
@@ -774,83 +775,40 @@
             }
         }
 
-        function gyujtsKedelyt(tipus) {
-            const cbs = document.querySelectorAll(`input[name="${tipus}Mood"]:checked`);
-            let kedelyek = [];
-            cbs.forEach(cb => { kedelyek.push(cb.value); cb.checked = false; });
-            return kedelyek;
-        }
-
-        function mentesEtel() {
-            const moods = gyujtsKedelyt('food');
-            
-            // Ha vannak feltöltött képek, mindegyik KÜLÖN elemként mentődik el
-            if(ideiglenesEtelKepek.length > 0) {
-                ideiglenesEtelKepek.forEach(kep => {
-                    mentestMent({
-                        tipus: 'food',
-                        nev: kep.name.trim() || szotar[aktualisNyelv].unnamed_food,
-                        moods: moods,
-                        datum: kep.date,
-                        ido: kep.time,
-                        kepek: [kep.src]
-                    });
-                });
-                ideiglenesEtelKepek = [];
-                frissitsKepElonezetet('foodPreviewCont', 'food');
-            } else {
-                // Manuális mentés fotó nélkül
-                const nev = document.getElementById('foodName').value.trim();
-                const datum = document.getElementById('foodDate').value;
-                const ido = document.getElementById('foodTime').value;
-                mentestMent({
-                    tipus: 'food',
-                    nev: nev,
-                    moods: moods,
-                    datum: datum,
-                    ido: ido,
-                    kepek: []
-                });
-                document.getElementById('foodName').value = ''; 
+        // Egyesített fogyasztás mentése
+        function mentesFogyasztas() {
+            const typeRadio = document.querySelector('input[name="consType"]:checked');
+            if(!typeRadio) {
+                alert(aktualisNyelv === 'hu' ? "Kérlek válaszd ki a típust (Étel vagy Ital)!" : "Please select the type (Food or Drink)!");
+                return;
             }
-
-            alert(szotar[aktualisNyelv].msg_saved);
-            alapertelmezettIdok();
-        }
-
-        function mentesItal() {
-            const moods = gyujtsKedelyt('drink');
             
-            // Ha vannak feltöltött képek, mindegyik KÜLÖN elemként mentődik el
-            if(ideiglenesItalKepek.length > 0) {
-                ideiglenesItalKepek.forEach(kep => {
-                    mentestMent({
-                        tipus: 'drink',
-                        nev: kep.name.trim() || szotar[aktualisNyelv].unnamed_drink,
-                        moods: moods,
-                        datum: kep.date,
-                        ido: kep.time,
-                        kepek: [kep.src]
-                    });
-                });
-                ideiglenesItalKepek = [];
-                frissitsKepElonezetet('drinkPreviewCont', 'drink');
-            } else {
-                // Manuális mentés fotó nélkül
-                const nev = document.getElementById('drinkName').value.trim();
-                const datum = document.getElementById('drinkDate').value;
-                const ido = document.getElementById('drinkTime').value;
-                mentestMent({
-                    tipus: 'drink',
-                    nev: nev,
-                    moods: moods,
-                    datum: datum,
-                    ido: ido,
-                    kepek: []
-                });
-                document.getElementById('drinkName').value = '';
-            }
+            const tipus = typeRadio.value; // 'food' vagy 'drink'
+            const nev = document.getElementById('consName').value.trim() || (tipus === 'food' ? szotar[aktualisNyelv].unnamed_food : szotar[aktualisNyelv].unnamed_drink);
+            const datum = document.getElementById('consDate').value;
+            const ido = document.getElementById('consTime').value;
+            
+            // Hangulat/kedély állapot kiszedése
+            const cbs = document.querySelectorAll(`input[name="consMood"]:checked`);
+            let moods = [];
+            cbs.forEach(cb => { moods.push(cb.value); cb.checked = false; });
+            
+            mentestMent({
+                tipus: tipus, // Az adatbázis struktúra változatlan marad ('food'/'drink'), így az AI elemző és az orvosi riport tökéletesen fog működni!
+                nev: nev,
+                moods: moods,
+                datum: datum,
+                ido: ido,
+                kepek: [...ideiglenesFogyasztasKepek]
+            });
 
+            // Mezők alaphelyzetbe állítása
+            document.getElementById('consName').value = '';
+            typeRadio.checked = false;
+            ideiglenesFogyasztasKepek = [];
+            frissitsKepElonezetet();
+            document.getElementById('consumptionFormFields').style.display = 'none';
+            
             alert(szotar[aktualisNyelv].msg_saved);
             alapertelmezettIdok();
         }
@@ -920,48 +878,6 @@
             }
         }
 
-        // ÚJ SZERKESZTÉSI FUNKCIÓK
-        function szerkesztesIndit(id) {
-            szerkesztesAlatt = id;
-            listazBejegyzesek();
-        }
-
-        function szerkesztesMegsem() {
-            szerkesztesAlatt = null;
-            listazBejegyzesek();
-        }
-
-        function szerkesztesMentes(id) {
-            let naplo = JSON.parse(localStorage.getItem('emesztesNaplo')) || [];
-            let elem = naplo.find(x => x.id === id);
-            
-            if(elem) {
-                elem.datum = document.getElementById(`edit_date_${id}`).value;
-                elem.ido = document.getElementById(`edit_time_${id}`).value;
-
-                if(elem.tipus === 'food' || elem.tipus === 'drink') {
-                    elem.nev = document.getElementById(`edit_name_${id}`).value.trim();
-                } else if(elem.tipus === 'symptom') {
-                    const checkboxes = document.querySelectorAll(`input[name="edit_symptom_${id}"]:checked`);
-                    let frissTünetek = [];
-                    checkboxes.forEach(cb => frissTünetek.push(cb.value));
-                    if(frissTünetek.length === 0) {
-                        alert(szotar[aktualisNyelv].msg_select_symptom);
-                        return;
-                    }
-                    elem.symptoms = frissTünetek;
-                } else if(elem.tipus === 'sleep_wake') {
-                    elem.durationMins = parseInt(document.getElementById(`edit_duration_${id}`).value) || 0;
-                    const radio = document.querySelector(`input[name="edit_wq_${id}"]:checked`);
-                    elem.wakeQuality = radio ? radio.value : "";
-                }
-
-                localStorage.setItem('emesztesNaplo', JSON.stringify(naplo));
-            }
-            szerkesztesAlatt = null;
-            listazBejegyzesek();
-        }
-
         function formatAlvasIdo(percek, nyv) {
             if (percek <= 0) return "N/A";
             const hrs = Math.floor(percek / 60);
@@ -1005,9 +921,7 @@
                     let szin = "#ccc";
                     let tipusCim = "";
                     let testSzoveg = "";
-                    let szerkesztesMod = (elem.id === szerkesztesAlatt);
 
-                    // Alapadatok előkészítése a kijelzéshez
                     if(elem.tipus === 'food') {
                         szin = "var(--primary)";
                         tipusCim = nyv.type_food;
@@ -1048,48 +962,6 @@
                         }
                     }
 
-                    // Dinamikus Szerkesztő Felület (ha aktiválva van)
-                    if(szerkesztesMod) {
-                        let editHtml = `
-                            <div style="background:#f1f2f6; padding:10px; border-radius:8px; display:flex; flex-direction:column; gap:8px;">
-                                <div style="display:flex; gap:5px;">
-                                    <input type="date" id="edit_date_${elem.id}" value="${elem.datum}" style="padding:5px; font-size:12px;">
-                                    <input type="time" id="edit_time_${elem.id}" value="${elem.ido}" style="padding:5px; font-size:12px;">
-                                </div>
-                        `;
-                        
-                        if(elem.tipus === 'food' || elem.tipus === 'drink') {
-                            editHtml += `<input type="text" id="edit_name_${elem.id}" value="${elem.nev || ''}" style="padding:6px; font-size:13px;">`;
-                        } else if(elem.tipus === 'symptom') {
-                            const list = ['bloating', 'stomachache', 'cramps', 'diarrhea', 'nausea', 'constipation'];
-                            editHtml += `<div class="grid-options" style="grid-template-columns: repeat(2, 1fr); gap:5px;">`;
-                            list.forEach(s => {
-                                let chk = elem.symptoms.includes(s) ? 'checked' : '';
-                                editHtml += `<label class="option-item" style="padding:4px; font-size:11px;"><input type="checkbox" name="edit_symptom_${elem.id}" value="${s}" ${chk}><span>${nyv['s_'+s]}</span></label>`;
-                            });
-                            editHtml += `</div>`;
-                        } else if(elem.tipus === 'sleep_wake') {
-                            editHtml += `
-                                <label style="font-size:11px; margin:0;">${nyv.log_duration}</label>
-                                <input type="number" id="edit_duration_${elem.id}" value="${elem.durationMins}" style="padding:5px; font-size:12px;">
-                                <div style="display:flex; gap:5px;">
-                                    <label class="option-item" style="flex:1; padding:3px; font-size:11px;"><input type="radio" name="edit_wq_${elem.id}" value="refreshed" ${elem.wakeQuality==='refreshed'?'checked':''}><span>${nyv.wq_refreshed}</span></label>
-                                    <label class="option-item" style="flex:1; padding:3px; font-size:11px;"><input type="radio" name="edit_wq_${elem.id}" value="tired" ${elem.wakeQuality==='tired'?'checked':''}><span>${nyv.wq_tired}</span></label>
-                                    <label class="option-item" style="flex:1; padding:3px; font-size:11px;"><input type="radio" name="edit_wq_${elem.id}" value="groggy" ${elem.wakeQuality==='groggy'?'checked':''}><span>${nyv.wq_groggy}</span></label>
-                                </div>
-                            `;
-                        }
-
-                        editHtml += `
-                                <div style="display:flex; gap:6px;">
-                                    <button onclick="szerkesztesMentes('${elem.id}')" style="flex:1; background:var(--primary); color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:12px;">Save</button>
-                                    <button onclick="szerkesztesMegsem()" style="flex:1; background:#718093; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:12px;">Cancel</button>
-                                </div>
-                            </div>
-                        `;
-                        testSzoveg = editHtml;
-                    }
-
                     let kepekHtml = "";
                     if(elem.kepek && elem.kepek.length > 0) {
                         kepekHtml = `<div class="log-images-container">`;
@@ -1101,10 +973,7 @@
                         <div class="log-item" style="border-left-color: ${szin}">
                             <div class="log-time" style="display:flex; justify-content:space-between; align-items:center;">
                                 <span>${elem.ido} - [${tipusCim}]</span>
-                                <div>
-                                    ${!szerkesztesMod ? `<button class="item-delete-btn" style="margin-right:8px; color:var(--drink);" onclick="event.stopPropagation(); szerkesztesIndit('${elem.id}')">✏️</button>` : ''}
-                                    <button class="item-delete-btn" onclick="event.stopPropagation(); elemTorles('${elem.id}')">🗑️</button>
-                                </div>
+                                <button class="item-delete-btn" onclick="event.stopPropagation(); elemTorles('${elem.id}')">🗑️</button>
                             </div>
                             <div class="log-body">
                                 <div>${testSzoveg}</div>
@@ -1119,8 +988,6 @@
             listaHelye.innerHTML = html;
         }
 
-        function ripszurtNaplo(napokSzama) { }
-
         function riportLetoltes(napokSzama) {
             let naplo = JSON.parse(localStorage.getItem('emesztesNaplo')) || [];
             const nyv = szotar[aktualisNyelv];
@@ -1130,7 +997,7 @@
             hatarIdo.setDate(hatarIdo.getDate() - napokSzama);
 
             let szurtNaplo = naplo.filter(elem => new Date(elem.datum) >= hatarIdo);
-            szurtNaplo.sort((a, b) => (a.datum + "T" + b.ido).localeCompare(a.datum + "T" + a.ido));
+            szurtNaplo.sort((a, b) => (a.datum + "T" + a.ido).localeCompare(a.datum + "T" + a.ido));
 
             if(szurtNaplo.length === 0) { alert(nyv.msg_no_report_data); return; }
 
