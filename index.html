@@ -302,9 +302,9 @@
         </div>
 
         <div style="background:#f0f2f5; padding:15px; border-radius:12px; margin-bottom:15px; font-size:12px; border: 1px solid #ddd;">
-            <label style="margin:0 0 5px 0; color:#2c3e50;">Google Gemini API Key (Free Testing):</label>
-            <input type="password" id="geminiApiKey" placeholder="AIzaSy..." style="padding:8px; font-size:12px;">
-            <div id="aiLoadingStatus" style="color: #3498db; font-weight:bold; margin-top:8px; display:none;">🤖 Gemini AI is analyzing image... Please wait...</div>
+            <label style="margin:0 0 5px 0; color:#2c3e50;">Google  API Key (Free Testing):</label>
+            <input type="password" id="ApiKey" placeholder="AIzaSy..." style="padding:8px; font-size:12px;">
+            <div id="aiLoadingStatus" style="color: #3498db; font-weight:bold; margin-top:8px; display:none;">🤖  AI is analyzing image... Please wait...</div>
         </div>
 
         <div class="tab-navigation">
@@ -634,11 +634,11 @@
 
                         if(tipus === 'food') {
                             ideiglenesEtelKepek.push(tomoritettDataUrl);
-                            hvdAGeminiKepfelismerest(tomoritettDataUrl, 'food', 'foodName');
+                            hvdAKepfelismerest(tomoritettDataUrl, 'food', 'foodName');
                         }
                         if(tipus === 'drink') {
                             ideiglenesItalKepek.push(tomoritettDataUrl);
-                            hvdAGeminiKepfelismerest(tomoritettDataUrl, 'drink', 'drinkName');
+                            hvdAKepfelismerest(tomoritettDataUrl, 'drink', 'drinkName');
                         }
 
                         frissitsKepElonezetet(contID, tipus);
@@ -675,19 +675,19 @@
             frissitsKepElonezetet(contID, tipus);
         }
 
-        // ÚJ: Kapcsolódás a Google Gemini 3.5 Flash modellhez (Ingyenes verzió)
-        async function hvdAGeminiKepfelismerest(base64Image, tipus, inputMezoId) {
-            const apiKey = document.getElementById('geminiApiKey').value.trim();
+        // ÚJ: Kapcsolódás a Google  3.5 Flash modellhez (Ingyenes verzió)
+        async function hvdAKepfelismerest(base64Image, tipus, inputMezoId) {
+            const apiKey = document.getElementById('ApiKey').value.trim();
             const loadingIndicator = document.getElementById('aiLoadingStatus');
             const inputMezo = document.getElementById(inputMezoId);
 
             if (!apiKey) {
-                alert("Please enter your free Google Gemini API Key first!");
+                alert("Please enter your free Google  API Key first!");
                 return;
             }
 
             loadingIndicator.style.display = "block";
-            inputMezo.placeholder = "AI is analyzing with Gemini...";
+            inputMezo.placeholder = "AI is analyzing with ...";
 
             // Levágjuk a base64 fejlécet a beküldéshez
             const tisztaBase64 = base64Image.split(',')[1];
@@ -699,7 +699,7 @@
             Do not include emojis, do not include chatty text, just give a plain sentence describing what it is (e.g., 'Zabkása eperrel' if language is HU). Max 10 words.`;
 
             // Google Gemini API végpont (v1beta verzió támogatja a Flash modellt)
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
 
             try {
                 const response = await fetch(url, {
